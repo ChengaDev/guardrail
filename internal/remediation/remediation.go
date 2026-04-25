@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/chengazit/guardrail/internal/osv"
-	"github.com/chengazit/guardrail/internal/resolver"
+	"github.com/ChengaDev/guardrail/internal/osv"
+	"github.com/ChengaDev/guardrail/internal/resolver"
 )
 
 // fetchAllVersions is the function used to retrieve all published versions of a package.

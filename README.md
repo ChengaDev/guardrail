@@ -279,7 +279,7 @@ This keeps your team's cache up to date overnight so installs during the day get
 
 ---
 
-## grail vs. lock file scanners
+## Guardrail vs. lock file scanners
 
 | | Guardrail | Grype / `npm audit` |
 |---|---|---|

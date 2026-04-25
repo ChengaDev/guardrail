@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chengazit/guardrail/internal/osv"
+	"github.com/ChengaDev/guardrail/internal/osv"
 )
 
 func newTestCache(t *testing.T, ttl time.Duration) *Cache {

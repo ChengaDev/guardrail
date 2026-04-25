@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/chengazit/guardrail/internal/osv"
+	"github.com/ChengaDev/guardrail/internal/osv"
 )
 
 // Entry is a single cache record stored on disk.

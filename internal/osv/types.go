@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/chengazit/guardrail/internal/severity"
+	"github.com/ChengaDev/guardrail/internal/severity"
 )
 
 // BatchRequest is the body sent to POST /v1/querybatch.

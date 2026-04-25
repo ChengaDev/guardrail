@@ -12,7 +12,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/chengazit/guardrail/internal/severity"
+	"github.com/ChengaDev/guardrail/internal/severity"
 )
 
 // Config is the fully-resolved configuration used at runtime.

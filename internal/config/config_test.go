@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chengazit/guardrail/internal/severity"
+	"github.com/ChengaDev/guardrail/internal/severity"
 )
 
 func TestDefaultConfig(t *testing.T) {

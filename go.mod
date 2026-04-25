@@ -1,4 +1,4 @@
-module github.com/chengazit/guardrail
+module github.com/ChengaDev/guardrail
 
 go 1.25.0
 

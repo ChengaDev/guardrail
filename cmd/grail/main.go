@@ -10,16 +10,16 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/chengazit/guardrail/internal/analyze"
-	"github.com/chengazit/guardrail/internal/cache"
-	"github.com/chengazit/guardrail/internal/config"
-	"github.com/chengazit/guardrail/internal/osv"
-	"github.com/chengazit/guardrail/internal/pm"
-	"github.com/chengazit/guardrail/internal/purl"
-	"github.com/chengazit/guardrail/internal/remediation"
-	"github.com/chengazit/guardrail/internal/resolver"
-	"github.com/chengazit/guardrail/internal/severity"
-	"github.com/chengazit/guardrail/internal/ui"
+	"github.com/ChengaDev/guardrail/internal/analyze"
+	"github.com/ChengaDev/guardrail/internal/cache"
+	"github.com/ChengaDev/guardrail/internal/config"
+	"github.com/ChengaDev/guardrail/internal/osv"
+	"github.com/ChengaDev/guardrail/internal/pm"
+	"github.com/ChengaDev/guardrail/internal/purl"
+	"github.com/ChengaDev/guardrail/internal/remediation"
+	"github.com/ChengaDev/guardrail/internal/resolver"
+	"github.com/ChengaDev/guardrail/internal/severity"
+	"github.com/ChengaDev/guardrail/internal/ui"
 )
 
 // Build-time variables injected by GoReleaser via -ldflags "-X main.version=...".

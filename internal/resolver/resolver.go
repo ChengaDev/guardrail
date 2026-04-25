@@ -76,7 +76,7 @@ func latestCargo(ctx context.Context, name string) (string, error) {
 		return "", err
 	}
 	// crates.io requires a User-Agent
-	req.Header.Set("User-Agent", "guardrail/0.1 (https://github.com/chengazit/guardrail)")
+	req.Header.Set("User-Agent", "guardrail/0.1 (https://github.com/ChengaDev/guardrail)")
 	resp, err := defaultClient.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("crates.io for %q: %w", name, err)
@@ -180,7 +180,7 @@ func allVersionsCargo(ctx context.Context, name string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", "guardrail/0.1 (https://github.com/chengazit/guardrail)")
+	req.Header.Set("User-Agent", "guardrail/0.1 (https://github.com/ChengaDev/guardrail)")
 	resp, err := defaultClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("crates.io for %q: %w", name, err)

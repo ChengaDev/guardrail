@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/chengazit/guardrail/internal/osv"
+	"github.com/ChengaDev/guardrail/internal/osv"
 )
 
 // --- compareVersions ---

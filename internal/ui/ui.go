@@ -9,10 +9,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/chengazit/guardrail/internal/analyze"
-	"github.com/chengazit/guardrail/internal/osv"
-	"github.com/chengazit/guardrail/internal/remediation"
-	"github.com/chengazit/guardrail/internal/severity"
+	"github.com/ChengaDev/guardrail/internal/analyze"
+	"github.com/ChengaDev/guardrail/internal/osv"
+	"github.com/ChengaDev/guardrail/internal/remediation"
+	"github.com/ChengaDev/guardrail/internal/severity"
 )
 
 // ANSI colour codes.

@@ -10,7 +10,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/chengazit/guardrail/internal/severity"
+	"github.com/ChengaDev/guardrail/internal/severity"
 )
 
 // --- Vuln unit tests ---
