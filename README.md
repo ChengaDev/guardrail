@@ -119,15 +119,23 @@ The goal is to make Guardrail invisible — so you never have to remember to use
 
 ### Shell alias (personal setup)
 
-Add to your `~/.zshrc` or `~/.bashrc`. Falls back silently if Guardrail isn't installed:
+Add to your `~/.zshrc` or `~/.bashrc`:
+
+```bash
+alias npm="grail npm"
+alias pip="grail pip"
+alias cargo="grail cargo"
+```
+
+Reload your shell (`source ~/.zshrc`) and you're done. Every `npm install` is now protected.
+
+If you want a graceful fallback for machines where Guardrail isn't installed:
 
 ```bash
 npm()   { command -v grail &>/dev/null && grail npm   "$@" || command npm   "$@"; }
 pip()   { command -v grail &>/dev/null && grail pip   "$@" || command pip   "$@"; }
 cargo() { command -v grail &>/dev/null && grail cargo "$@" || command cargo "$@"; }
 ```
-
-Reload your shell (`source ~/.zshrc`) and you're done. Every `npm install` is now protected.
 
 ### direnv (project-level, team-wide)
 
