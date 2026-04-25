@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guardrail — shift-left security for your package manager. Checks every package you install against the OSV vulnerability database before it touches your codebase.">
+  <title>Guardrail — shift-left security for your package manager</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d0d0d;
+      color: #e5e7eb;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Animations ──────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+      50%       { box-shadow: 0 0 0 6px rgba(59,130,246,0); }
+    }
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px rgba(59,130,246,0.3); }
+      50%       { text-shadow: 0 0 40px rgba(59,130,246,0.6); }
+    }
+    @keyframes shield-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.7; }
+    }
+
+    .animate-fade-up { animation: fadeUp 0.6s ease both; }
+    .animate-fade-in { animation: fadeIn 0.6s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.35s; }
+    .delay-4 { animation-delay: 0.5s; }
+
+    /* ── Nav ─────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      border-bottom: 1px solid #1a1a1a;
+      position: sticky;
+      top: 0;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      animation: fadeIn 0.4s ease both;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .nav-dot {
+      width: 9px;
+      height: 9px;
+      background: #3b82f6;
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    /* ── Hero ────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 6.5rem 1.5rem 5rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      color: #3b82f6;
+      font-weight: 500;
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      background: #3b82f6;
+      border-radius: 50%;
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.35rem;
+    }
+
+    .hero h1 .brand {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background: linear-gradient(135deg, #fff 0%, #d1d5db 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 .accent {
+      color: #3b82f6;
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    .hero p {
+      color: #9ca3af;
+      font-size: 1.08rem;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.75rem;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: #fff;
+      padding: 0.7rem 1.6rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #e5e7eb;
+      padding: 0.7rem 1.6rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid #2d2d2d;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: #555;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* ── Terminal ────────────────────────────── */
+    .terminal {
+      background: #0a0a0a;
+      border: 1px solid #1e1e1e;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.83rem;
+      max-width: 540px;
+      margin: 0 auto;
+      transition: border-color 0.2s;
+    }
+
+    .terminal:hover { border-color: #2a2a2a; }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .terminal-dots { display: flex; gap: 0.4rem; }
+    .terminal-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-dots .red    { background: #ff5f56; }
+    .terminal-dots .yellow { background: #ffbd2e; }
+    .terminal-dots .green  { background: #27c93f; }
+
+    .t-line { display: flex; gap: 0.6rem; line-height: 1.9; flex-wrap: wrap; }
+    .t-prompt  { color: #10b981; user-select: none; flex-shrink: 0; }
+    .t-cmd     { color: #d1d5db; }
+    .t-blank   { height: 0.5rem; }
+
+    .t-crit  { color: #3b82f6; font-weight: 600; }
+    .t-warn  { color: #f97316; font-weight: 600; }
+    .t-safe  { color: #10b981; font-weight: 600; }
+    .t-dim   { color: #4b5563; }
+    .t-info  { color: #6b7280; padding-left: 1.4rem; }
+    .t-block { color: #3b82f6; font-weight: 700; margin-top: 0.5rem; display: block; }
+
+    /* ── Section ─────────────────────────────── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+
+    section h2 {
+      text-align: center;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 2.75rem;
+    }
+
+    hr { border: none; border-top: 1px solid #1a1a1a; }
+
+    /* ── Feature cards ───────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 640px)  { .cards { grid-template-columns: 1fr; } }
+    @media (min-width: 641px) and (max-width: 860px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+
+    .card {
+      background: #0f0f0f;
+      border: 1px solid #1e1e1e;
+      border-radius: 12px;
+      padding: 1.4rem 1.3rem;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      border-color: #2a2a2a;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .card-icon { font-size: 1.15rem; margin-bottom: 0.65rem; }
+
+    .card h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #f3f4f6;
+      margin-bottom: 0.45rem;
+    }
+
+    .card p {
+      font-size: 0.82rem;
+      color: #6b7280;
+      line-height: 1.65;
+    }
+
+    /* ── How it works steps ──────────────────── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .step.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .step-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #9ca3af;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-line {
+      width: 1px;
+      flex: 1;
+      min-height: 24px;
+      background: #1e1e1e;
+      margin: 4px 0;
+    }
+
+    .step-body { padding-bottom: 1.75rem; }
+
+    .step-body h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #f3f4f6;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-body p {
+      font-size: 0.82rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    /* ── Pills ───────────────────────────────── */
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .pill {
+      border: 1px solid #1e1e1e;
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+      cursor: default;
+    }
+
+    .pill:hover {
+      border-color: #3f3f3f;
+      color: #e5e7eb;
+      transform: scale(1.04);
+    }
+
+    /* ── Install snippet ─────────────────────── */
+    .install-box {
+      background: #0a0a0a;
+      border: 1px solid #1e1e1e;
+      border-radius: 12px;
+      padding: 1.1rem 1.4rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      max-width: 480px;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .install-box code { color: #d1d5db; }
+    .install-box .prompt { color: #10b981; margin-right: 0.5rem; user-select: none; }
+
+    .copy-btn {
+      background: #1e1e1e;
+      border: none;
+      color: #9ca3af;
+      padding: 0.25rem 0.7rem;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { background: #2a2a2a; color: #fff; }
+
+    .install-alts {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .install-alts a {
+      color: #6b7280;
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .install-alts a:hover { color: #9ca3af; }
+
+    /* ── Footer ──────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: #4b5563;
+      font-size: 0.8rem;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    footer a { color: #6b7280; text-decoration: none; transition: color 0.15s; }
+    footer a:hover { color: #9ca3af; }
+    footer span { margin: 0 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <span class="nav-dot"></span>
+      grail
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://github.com/ChengaDev/guardrail">GitHub</a></li>
+      <li><a href="https://github.com/ChengaDev/guardrail/releases">Releases</a></li>
+      <li><a href="https://github.com/ChengaDev/guardrail#readme">Docs</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge animate-fade-in">
+      <span class="dot"></span>
+      Open Source &mdash; MIT License
+    </div>
+    <h1 class="animate-fade-up delay-1">
+      <span class="brand">Guardrail</span><br>
+      Stop vulnerable packages<br><span class="accent">before</span> they enter.
+    </h1>
+    <p class="animate-fade-up delay-2">
+      Guardrail wraps your package manager and checks every package against the OSV vulnerability database — before it touches your lockfile, before code review, before CI. Shift-left security that fits in your existing workflow.
+    </p>
+    <div class="hero-buttons animate-fade-up delay-3">
+      <a href="https://github.com/ChengaDev/guardrail/releases" class="btn-primary">Download</a>
+      <a href="https://github.com/ChengaDev/guardrail" class="btn-secondary">View Source</a>
+    </div>
+
+    <!-- Terminal -->
+    <div class="terminal animate-fade-up delay-4">
+      <div class="terminal-bar">
+        <div class="terminal-dots">
+          <span class="red"></span>
+          <span class="yellow"></span>
+          <span class="green"></span>
+        </div>
+      </div>
+
+      <div class="t-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd">grail npm install express@4.17.0</span>
+      </div>
+      <div class="t-blank"></div>
+      <div class="t-line">
+        <span class="t-crit">🔴 CRITICAL</span>
+        <span class="t-cmd">CVE-2024-1234 &nbsp; pkg:npm/express@4.17.0</span>
+      </div>
+      <div class="t-line">
+        <span class="t-info">Prototype pollution via crafted request header</span>
+      </div>
+      <div class="t-line">
+        <span class="t-info" style="color:#10b981">✦ Patch: upgrade to 4.18.2</span>
+      </div>
+      <div class="t-blank"></div>
+      <div class="t-line">
+        <span class="t-safe">✅ SAFE</span>
+        <span class="t-cmd">pkg:npm/lodash@4.17.21</span>
+        <span class="t-dim">(no CVEs found)</span>
+      </div>
+      <div class="t-blank"></div>
+      <span class="t-block">❌ Installation blocked. Fix CVEs or add ignore rules.</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Why Guardrail -->
+  <section>
+    <h2>Why Guardrail?</h2>
+    <p class="section-sub">Most security tools run too late. Guardrail runs first.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🚫</div>
+        <h3>Blocks at Install Time</h3>
+        <p>By the time a lock file scanner runs, the vulnerable package is already committed. Guardrail stops it the moment you type <code style="font-size:0.8rem;color:#9ca3af">npm install</code> — before anything lands in your repo.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>Powered by OSV.dev</h3>
+        <p>Queries the open-source OSV vulnerability database — the same data behind GitHub's Dependabot. No account required, no API key, no rate limits.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Local Cache</h3>
+        <p>Results are cached locally for 24 hours. After the first check, repeated installs of the same package are instant. Point the cache at a shared NFS path to share it across your whole team.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>LLM Impact Analysis</h3>
+        <p>Optional Claude-powered analysis checks whether your code actually calls the vulnerable function before blocking. Reduces false positives without compromising security.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔧</div>
+        <h3>Remediation Built-in</h3>
+        <p>Guardrail doesn't just report — it tells you the minimum safe version to install. When no patch exists, it finds the last version that predates the vulnerability.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <h3>Ignore Rules</h3>
+        <p>Reviewed a CVE and accepted the risk? Add an ignore rule with a reason and optional expiry date. Rules auto-expire so accepted risks get re-evaluated over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- How it works -->
+  <section>
+    <h2>How it works</h2>
+    <p class="section-sub">Five steps between your command and the real package manager.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-connector">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Parse &amp; resolve</h3>
+          <p>Guardrail reads the package names from your install command and resolves any missing versions from the package registry.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-connector">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Check the cache</h3>
+          <p>Each package is looked up in the local cache. Results less than 24 hours old are used immediately — no network call needed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-connector">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Query OSV</h3>
+          <p>Cache misses are batched into a single request to the OSV API. Results are saved to the local cache for next time.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-connector">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Evaluate &amp; report</h3>
+          <p>CVEs are matched against your severity threshold and ignore rules. A full report is printed to the terminal.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-connector">
+          <div class="step-num">5</div>
+        </div>
+        <div class="step-body">
+          <h3>Block or pass through</h3>
+          <p>If any package is blocked, the install exits. Otherwise Guardrail hands off to the real package manager — completely transparent to your workflow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- Install -->
+  <section>
+    <h2>Install</h2>
+    <p class="section-sub">One binary. No runtime dependencies.</p>
+    <div class="install-box">
+      <div>
+        <span class="prompt">$</span>
+        <code>brew install ChengaDev/tap/grail</code>
+      </div>
+      <button class="copy-btn" onclick="copyCmd(this, 'brew install ChengaDev/tap/grail')">Copy</button>
+    </div>
+    <div class="install-alts">
+      <a href="https://github.com/ChengaDev/guardrail/releases">↓ Binary download</a>
+      <a href="https://github.com/ChengaDev/guardrail#install">go install</a>
+      <a href="https://github.com/ChengaDev/guardrail#shell-alias-personal-setup">Shell alias setup</a>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- Built with -->
+  <section>
+    <h2>Built with</h2>
+    <p class="section-sub">A minimal, auditable stack.</p>
+    <div class="pills">
+      <span class="pill">Go</span>
+      <span class="pill">OSV.dev</span>
+      <span class="pill">Claude API</span>
+      <span class="pill">cobra</span>
+      <span class="pill">npm</span>
+      <span class="pill">PyPI</span>
+      <span class="pill">crates.io</span>
+      <span class="pill">macOS</span>
+      <span class="pill">Linux</span>
+      <span class="pill">Windows</span>
+      <span class="pill">amd64</span>
+      <span class="pill">arm64</span>
+      <span class="pill">MIT License</span>
+    </div>
+  </section>
+
+  <hr>
+
+  <footer>
+    Built by <a href="https://github.com/ChengaDev">@ChengaDev</a>
+    <span>·</span>
+    <a href="https://github.com/ChengaDev/guardrail">GitHub</a>
+    <span>·</span>
+    <a href="https://github.com/ChengaDev/guardrail/releases">Releases</a>
+    <span>·</span>
+    MIT License
+  </footer>
+
+  <script>
+    function copyCmd(btn, text) {
+      navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.card, .step').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
