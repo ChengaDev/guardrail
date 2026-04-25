@@ -1,5 +1,9 @@
 # Guardrail
 
+[![CI](https://github.com/ChengaDev/guardrail/actions/workflows/ci.yml/badge.svg)](https://github.com/ChengaDev/guardrail/actions/workflows/ci.yml)
+[![Release](https://github.com/ChengaDev/guardrail/actions/workflows/release.yml/badge.svg)](https://github.com/ChengaDev/guardrail/actions/workflows/release.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 **Block vulnerable packages before they enter your codebase.**
 
 Guardrail wraps your package manager and checks every package you install against the [OSV](https://osv.dev) vulnerability database — before it touches your lockfile, before code review, before CI. When it finds a problem, it tells you exactly what to install instead.
