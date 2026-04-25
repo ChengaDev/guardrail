@@ -1,8 +1,8 @@
-# grail
+# Guardrail
 
 **Block vulnerable packages before they enter your codebase.**
 
-grail wraps your package manager and checks every package you install against the [OSV](https://osv.dev) vulnerability database — before it touches your lockfile, before code review, before CI. When it finds a problem, it tells you exactly what to install instead.
+Guardrail wraps your package manager and checks every package you install against the [OSV](https://osv.dev) vulnerability database — before it touches your lockfile, before code review, before CI. When it finds a problem, it tells you exactly what to install instead.
 
 ```
 $ grail npm install express
@@ -17,7 +17,7 @@ $ grail npm install express
 
 One line tells you what's wrong and what version fixes it. No tab-switching, no searching NVD, no guessing.
 
-By the time a lock file scanner (Grype, `npm audit`) runs, the vulnerable package is already committed. grail stops it at your fingertips.
+By the time a lock file scanner (Grype, `npm audit`) runs, the vulnerable package is already committed. Guardrail stops it at your fingertips.
 
 ---
 
@@ -54,7 +54,7 @@ grail pip install django
 grail cargo add serde tokio
 ```
 
-grail resolves versions, checks OSV, and either blocks the install or passes through to the real package manager — with no change to your existing workflow.
+Guardrail resolves versions, checks OSV, and either blocks the install or passes through to the real package manager — with no change to your existing workflow.
 
 Check a specific package without installing:
 ```sh
@@ -77,9 +77,9 @@ No agent, no account, no API key required.
 
 ## Remediation suggestions
 
-grail doesn't just tell you what's broken — it tells you what to install instead.
+Guardrail doesn't just tell you what's broken — it tells you what to install instead.
 
-**When a patched version exists**, grail recommends the minimum version that fixes all reported CVEs:
+**When a patched version exists**, Guardrail recommends the minimum version that fixes all reported CVEs:
 
 ```
 🔴 CRITICAL  CVE-2021-44228   pkg:npm/log4js@1.0.0
@@ -88,7 +88,7 @@ grail doesn't just tell you what's broken — it tells you what to install inste
              ✦ Patch: upgrade to 2.0.0
 ```
 
-**When no patch exists**, grail finds the newest published version that predates the vulnerability introduction — so you can at least pin to something safe while waiting for a fix:
+**When no patch exists**, Guardrail finds the newest published version that predates the vulnerability introduction — so you can at least pin to something safe while waiting for a fix:
 
 ```
 🔴 HIGH      CVE-2024-9999    pkg:npm/newlib@3.1.0
@@ -111,11 +111,11 @@ In `--json` mode, remediation is included in the output for CI scripting:
 
 ## Integrating into your workflow
 
-The goal is to make grail invisible — so you never have to remember to use it.
+The goal is to make Guardrail invisible — so you never have to remember to use it.
 
 ### Shell alias (personal setup)
 
-Add to your `~/.zshrc` or `~/.bashrc`. Falls back silently if grail isn't installed:
+Add to your `~/.zshrc` or `~/.bashrc`. Falls back silently if Guardrail isn't installed:
 
 ```bash
 npm()   { command -v grail &>/dev/null && grail npm   "$@" || command npm   "$@"; }
@@ -158,7 +158,7 @@ install:
 
 ## Configuration
 
-grail merges two config files — project-level wins over global:
+Guardrail merges two config files — project-level wins over global:
 
 | File | Scope |
 |------|-------|
@@ -220,13 +220,13 @@ This appends an ignore rule to `.guirdrail.yaml`. Rules with an `expires` date a
 
 ## LLM impact analysis
 
-grail can use Claude to check whether your code actually calls the vulnerable functionality before deciding to block:
+Guardrail can use Claude to check whether your code actually calls the vulnerable functionality before deciding to block:
 
 ```sh
 grail install --analyze npm install express
 ```
 
-Or enable it permanently in config (`impact_analysis.enabled: true`). grail scans files that import the flagged package, sends only the relevant snippets to the Claude API, and returns one of:
+Or enable it permanently in config (`impact_analysis.enabled: true`). Guardrail scans files that import the flagged package, sends only the relevant snippets to the Claude API, and returns one of:
 
 - `EXPLOITABLE` — your code calls the vulnerable function
 - `LIKELY_SAFE` — the vulnerable code path isn't reachable from your usage
@@ -269,14 +269,14 @@ This keeps your team's cache up to date overnight so installs during the day get
 
 ## grail vs. lock file scanners
 
-| | grail | Grype / `npm audit` |
+| | Guardrail | Grype / `npm audit` |
 |---|---|---|
 | **When it runs** | As you add a package | After the fact (lockfile / CI) |
 | **What it checks** | The package you're about to install | Everything already in your dependencies |
 | **Blocks install** | Yes | No |
 | **Catches new packages** | Yes | Only after commit |
 
-They're complementary. grail keeps new vulnerable packages out; lock file scanners audit what's already there. For full coverage, use both.
+They're complementary. Guardrail keeps new vulnerable packages out; lock file scanners audit what's already there. For full coverage, use both.
 
 ---
 
