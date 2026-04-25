@@ -29,21 +29,21 @@ Most security tools catch vulnerabilities after the fact — in CI, in code revi
 
 **macOS (Homebrew)**
 ```sh
-brew install chengazit/tap/grail
+brew install ChengaDev/tap/grail
 ```
 
 **Linux / macOS (binary)**
 ```sh
-curl -sSL https://github.com/chengazit/guardrail/releases/latest/download/grail_$(uname -s)_$(uname -m).tar.gz | tar -xz
+curl -sSL https://github.com/ChengaDev/guardrail/releases/latest/download/grail_$(uname -s)_$(uname -m).tar.gz | tar -xz
 sudo mv grail /usr/local/bin/
 ```
 
 **Windows**
-Download the `.zip` from the [latest release](https://github.com/chengazit/guardrail/releases/latest), extract, and add to your `PATH`.
+Download the `.zip` from the [latest release](https://github.com/ChengaDev/guardrail/releases/latest), extract, and add to your `PATH`.
 
 **Go**
 ```sh
-go install github.com/chengazit/guardrail/cmd/grail@latest
+go install github.com/ChengaDev/guardrail/cmd/grail@latest
 ```
 
 ---
