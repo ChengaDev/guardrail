@@ -37,6 +37,20 @@ archives:
           - zip
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
+brews:
+  - name: grail
+    repository:
+      owner: ChengaDev
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: "https://github.com/ChengaDev/guardrail"
+    description: "CVE-aware package manager wrapper — shift-left security at install time"
+    license: "MIT"
+    install: |
+      bin.install "grail"
+    test: |
+      system "#{bin}/grail", "version"
+
 checksum:
   name_template: "checksums.txt"
   algorithm: sha256
@@ -54,7 +68,7 @@ changelog:
 
 release:
   github:
-    owner: chengazit
+    owner: ChengaDev
     name: guardrail
   draft: false
   prerelease: auto   # tags like v1.0.0-rc1 are marked pre-release automatically
