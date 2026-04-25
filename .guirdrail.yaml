@@ -1,0 +1,31 @@
+# guirdrail project-level configuration example.
+# This file is checked into the repo and applies to all contributors.
+# Global config at ~/.guirdrail/config.yaml is merged first; project-level wins.
+
+# Minimum severity to act on. Options: NONE | LOW | MEDIUM | HIGH | CRITICAL
+severity_threshold: HIGH
+
+# Block installation when a CVE meets/exceeds the threshold.
+# Set to false to warn-only.
+block: true
+
+# Fail-open: if OSV API is unreachable and cache is expired, continue anyway.
+# Set to true to block instead.
+strict: false
+
+# Cache settings
+cache:
+  path: ~/.guirdrail/cache
+  ttl: 24h
+
+# LLM impact analysis via Claude API (opt-in).
+impact_analysis:
+  enabled: false
+  # anthropic_api_key: ""   # set via ANTHROPIC_API_KEY env var instead
+  min_severity: HIGH
+
+# CVE ignore rules.
+# ignores:
+#   - cve: CVE-2023-1234
+#     reason: "Not exploitable — we don't use the affected endpoint"
+#     expires: 2025-12-31
