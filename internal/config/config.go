@@ -1,5 +1,5 @@
-// Package config handles loading, merging, and validating guirdrail configuration.
-// Config files are YAML; project-level (.guirdrail.yaml) wins over global (~/.guirdrail/config.yaml).
+// Package config handles loading, merging, and validating guardrail configuration.
+// Config files are YAML; project-level (.guardrail.yaml) wins over global (~/.guardrail/config.yaml).
 // Environment variables override both.
 package config
 
@@ -85,7 +85,7 @@ func DefaultConfig() *Config {
 		Block:             true,
 		Strict:            false,
 		Cache: CacheConfig{
-			Path: filepath.Join(home, ".guirdrail", "cache"),
+			Path: filepath.Join(home, ".guardrail", "cache"),
 			TTL:  24 * time.Hour,
 		},
 		ImpactAnalysis: ImpactAnalysisConfig{
@@ -109,8 +109,8 @@ func DefaultConfig() *Config {
 // Load reads, merges, and resolves the final configuration.
 // Lookup order:
 //  1. Built-in defaults
-//  2. Global config (~/.guirdrail/config.yaml)
-//  3. Project config (.guirdrail.yaml in cwd)
+//  2. Global config (~/.guardrail/config.yaml)
+//  3. Project config (.guardrail.yaml in cwd)
 //  4. Environment variable overrides
 func Load() (*Config, error) {
 	cfg := DefaultConfig()
@@ -126,12 +126,12 @@ func Load() (*Config, error) {
 
 	// Global config
 	home, _ := os.UserHomeDir()
-	if err := mergeFile(cfg, filepath.Join(home, ".guirdrail", "config.yaml")); err != nil && !os.IsNotExist(err) {
+	if err := mergeFile(cfg, filepath.Join(home, ".guardrail", "config.yaml")); err != nil && !os.IsNotExist(err) {
 		return nil, fmt.Errorf("loading global config: %w", err)
 	}
 
 	// Project-level config
-	if err := mergeFile(cfg, ".guirdrail.yaml"); err != nil && !os.IsNotExist(err) {
+	if err := mergeFile(cfg, ".guardrail.yaml"); err != nil && !os.IsNotExist(err) {
 		return nil, fmt.Errorf("loading project config: %w", err)
 	}
 

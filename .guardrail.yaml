@@ -1,6 +1,6 @@
-# guirdrail project-level configuration example.
+# guardrail project-level configuration example.
 # This file is checked into the repo and applies to all contributors.
-# Global config at ~/.guirdrail/config.yaml is merged first; project-level wins.
+# Global config at ~/.guardrail/config.yaml is merged first; project-level wins.
 
 # Minimum severity to act on. Options: NONE | LOW | MEDIUM | HIGH | CRITICAL
 severity_threshold: HIGH
@@ -15,7 +15,7 @@ strict: false
 
 # Cache settings
 cache:
-  path: ~/.guirdrail/cache
+  path: ~/.guardrail/cache
   ttl: 24h
 
 # LLM impact analysis via Claude API (opt-in).

@@ -146,7 +146,7 @@ Examples:
 	var ignoreExpires string
 	ignoreCmd := &cobra.Command{
 		Use:   "ignore <cve-id>",
-		Short: "Add a CVE ignore rule to .guirdrail.yaml",
+		Short: "Add a CVE ignore rule to .guardrail.yaml",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runIgnore(args[0], ignoreReason, ignoreExpires)
@@ -445,7 +445,7 @@ func runCheck(purlStr string) error {
 }
 
 func runIgnore(cveID, reason, expires string) error {
-	const configFile = ".guirdrail.yaml"
+	const configFile = ".guardrail.yaml"
 
 	data, err := os.ReadFile(configFile)
 	if err != nil && !os.IsNotExist(err) {

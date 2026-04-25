@@ -1,4 +1,4 @@
-// Package ui handles all terminal output for guirdrail.
+// Package ui handles all terminal output for guardrail.
 // Use --json flag to switch to machine-readable output.
 package ui
 
@@ -139,7 +139,7 @@ func (p *Printer) PrintBlockedMessage() {
 	if p.jsonMode {
 		return
 	}
-	fmt.Fprintf(p.out, "\n%s%s❌ Installation blocked.%s Fix CVEs or add ignore rules to .guirdrail.yaml\n",
+	fmt.Fprintf(p.out, "\n%s%s❌ Installation blocked.%s Fix CVEs or add ignore rules to .guardrail.yaml\n",
 		colorBold, colorRed, colorReset)
 }
 

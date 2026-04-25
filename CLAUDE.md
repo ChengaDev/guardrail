@@ -63,7 +63,7 @@ via `golang.org/x/net/http2`.
 ## Caching Strategy
 
 ### Design
-- Cache is stored locally at `~/.guirdrail/cache/`
+- Cache is stored locally at `~/.guardrail/cache/`
 - Key: SHA256 of the PURL (e.g. `sha256("pkg:npm/express@4.18.2")`)
 - Value: JSON result from OSV + timestamp
 - Default TTL: 24 hours
@@ -75,7 +75,7 @@ After a few days of normal use it naturally reflects the team's actual dependenc
 
 ### sync command
 `grail sync` refreshes CVE data for everything already in the cache:
-1. Read all entries from `~/.guirdrail/cache/` → collect their PURLs
+1. Read all entries from `~/.guardrail/cache/` → collect their PURLs
 2. Chunk into batches of 1,000 (OSV batch limit)
 3. Send batch request(s) to OSV API
 4. Overwrite cache entries with fresh results + reset TTL
@@ -99,8 +99,8 @@ If the OSV API is unreachable and cache is expired:
 ## Configuration
 
 ### Config file locations (merged, project-level wins over global)
-1. `~/.guirdrail/config.yaml` — global user config
-2. `.guirdrail.yaml` — project-level config (checked into repo)
+1. `~/.guardrail/config.yaml` — global user config
+2. `.guardrail.yaml` — project-level config (checked into repo)
 
 ### Full config reference
 
@@ -124,15 +124,15 @@ strict: false
 cache:
   # Path to local cache directory.
   # Can be a shared NFS path for team-wide cache sharing.
-  # Default: ~/.guirdrail/cache
-  path: ~/.guirdrail/cache
+  # Default: ~/.guardrail/cache
+  path: ~/.guardrail/cache
 
   # How long to trust a cached result before re-fetching.
   # Default: 24h
   ttl: 24h
 
 # LLM impact analysis via Claude API.
-# When enabled, guirdrail will check whether your code actually calls
+# When enabled, guardrail will check whether your code actually calls
 # the vulnerable functionality before blocking/warning.
 impact_analysis:
   enabled: false
@@ -157,7 +157,7 @@ ignores:
     # no expiry = ignore forever (not recommended)
 
 # Package manager configuration.
-# guirdrail auto-detects which PM to use from the command.
+# guardrail auto-detects which PM to use from the command.
 # Override binary paths here if needed (e.g. custom installs, nvm, pyenv).
 package_managers:
   npm:
@@ -215,7 +215,7 @@ package_managers:
 ## Version Resolution
 
 If the user does not specify a version (e.g. `npm install express` with no `@version`),
-guirdrail must resolve the latest version before building the PURL.
+guardrail must resolve the latest version before building the PURL.
 
 | Ecosystem | Resolution endpoint |
 |-----------|---------------------|
@@ -277,7 +277,7 @@ Always use colored terminal output. Machine-readable JSON output available via `
 
 ✅ SAFE      pkg:npm/lodash@4.17.21  (no CVEs found)
 
-❌ Installation blocked. Fix CVEs or add ignore rules to .guirdrail.yaml
+❌ Installation blocked. Fix CVEs or add ignore rules to .guardrail.yaml
 ```
 
 ---
@@ -285,9 +285,9 @@ Always use colored terminal output. Machine-readable JSON output available via `
 ## Project Structure
 
 ```
-guirdrail/
+guardrail/
 ├── cmd/
-│   └── guirdrail/
+│   └── guardrail/
 │       └── main.go
 ├── internal/
 │   ├── config/          # config loading, merging, validation
@@ -304,7 +304,7 @@ guirdrail/
 │   ├── severity/        # severity parsing and comparison
 │   ├── analyze/         # LLM impact analysis via Claude API
 │   └── ui/              # terminal output, colors, JSON mode
-├── .guirdrail.yaml        # example project config
+├── .guardrail.yaml        # example project config
 ├── CLAUDE.md
 └── README.md
 ```
@@ -347,5 +347,5 @@ the same pattern and can be added incrementally.
 - `uninstall` command
 - Lock file scanning (use Grype or Trivy for that)
 - Private registry authentication
-- CI/CD `scan` command (future: `guirdrail scan` to audit existing lock file)
+- CI/CD `scan` command (future: `guardrail scan` to audit existing lock file)
 - Full offline mode via GCS dump download

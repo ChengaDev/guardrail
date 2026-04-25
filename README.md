@@ -16,7 +16,7 @@ $ grail npm install express
              https://osv.dev/vulnerability/GHSA-xxxx-yyyy-zzzz
              ✦ Patch: upgrade to 4.18.2
 
-❌ Installation blocked. Fix CVEs or add ignore rules to .guirdrail.yaml
+❌ Installation blocked. Fix CVEs or add ignore rules to .guardrail.yaml
 ```
 
 One line tells you what's wrong and what version fixes it. No tab-switching, no searching NVD, no guessing.
@@ -174,8 +174,8 @@ Guardrail merges two config files — project-level wins over global:
 
 | File | Scope |
 |------|-------|
-| `~/.guirdrail/config.yaml` | Global (your machine) |
-| `.guirdrail.yaml` | Project (check into repo) |
+| `~/.guardrail/config.yaml` | Global (your machine) |
+| `.guardrail.yaml` | Project (check into repo) |
 
 **Full reference:**
 
@@ -190,7 +190,7 @@ block: true
 strict: false
 
 cache:
-  path: ~/.guirdrail/cache   # can be a shared NFS path for team cache
+  path: ~/.guardrail/cache   # can be a shared NFS path for team cache
   ttl: 24h
 
 # LLM analysis: checks whether your code actually calls the vulnerable function
@@ -226,7 +226,7 @@ After reviewing a CVE and deciding it doesn't apply:
 grail ignore CVE-2023-1234 --reason "not exploitable in our setup" --expires 2025-12-31
 ```
 
-This appends an ignore rule to `.guirdrail.yaml`. Rules with an `expires` date are automatically re-enabled after that date.
+This appends an ignore rule to `.guardrail.yaml`. Rules with an `expires` date are automatically re-enabled after that date.
 
 ---
 
@@ -270,7 +270,7 @@ jobs:
     steps:
       - uses: actions/cache@v4
         with:
-          path: ~/.guirdrail/cache
+          path: ~/.guardrail/cache
           key: grail-cache-${{ runner.os }}
       - run: grail sync
 ```
